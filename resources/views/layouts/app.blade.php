@@ -29,6 +29,12 @@
             background:#111827;
             color:white;
             padding:25px;
+
+            position:fixed;
+            top:0;
+            left:0;
+            height:100vh;
+            overflow-y:auto;
         }
 
         .logo {
@@ -75,8 +81,9 @@
         /* Main */
 
         .main{
-            flex:1;
+            margin-left:300px;
             padding:30px;
+            width: 100%;
         }
 
         .topbar{
@@ -315,6 +322,20 @@
 
         }
 
+        .logout-btn{
+            background:none;
+            border:none;
+            color:#4338ca;
+            font-size:12px;
+            cursor:pointer;
+            padding:0;
+            margin-top:2px;
+        }
+
+        .logout-btn:hover{
+            text-decoration:underline;
+        }
+
     </style>
 
 </head>
@@ -328,7 +349,7 @@
 
     
     <ul class="menu">
-        <a href="/home"><li class="active">Dashboard</li></a>
+        <a href="/home"><li>Dashboard</li></a>
         <a href="/products"><li>Products</li></a>
         <a href="/sales"><li>Sales</li></a>
         <a href="/inventory"><li>Inventory</li></a>
@@ -339,7 +360,32 @@
 
 </div>
 
-<!-- Page Content -->
-        @yield('content')
+<div class="main">
+
+    <div class="topbar">
+        <input type="text" class="search-box" placeholder="Search product...">
+        <div class="profile">
+            <div>
+                <strong>Admin User</strong><br>
+                <small>Administrator</small>
+               <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="logout-btn">
+                        Logout
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-circle">
+                A
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    @yield('content')
+
+</div>
+        
 </body>
 </html>

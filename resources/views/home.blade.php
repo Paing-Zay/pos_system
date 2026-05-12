@@ -1,23 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="main">
-
-    <div class="topbar">
-        <input type="text" class="search-box" placeholder="Search product...">
-        <div class="profile">
-            <div>
-                <strong>Admin User</strong><br>
-                <small>Administrator</small>
-                <a href="/login">Login</a>
-            </div>
-
-            <div class="profile-circle">
-                A
-            </div>
-        </div>
-    </div>
-
     <div class="cards">
         <div class="card">
             <small>Total Sales</small>
@@ -46,44 +29,27 @@
                 <h2>Products</h2>
                 <input type="text" class="barcode-input" placeholder="Scan barcode...">
             </div>
-
             <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">T-Shirt</div>
-                    <div class="product-info">
-                        <h4>Classic T-Shirt</h4>
-                        <p>Barcode: 89910001</p>
-                        <div class="price-row">
-                            <div class="price">$25</div>
-                            <button class="add-btn">Add</button>
+                @foreach($products as $product)
+                    <div class="product-card">
+                        <div class="product-image">
+                            {{ $product->name }}
                         </div>
-                    </div>
-                </div>
 
-                <div class="product-card">
-                    <div class="product-image">Shoes</div>
-                    <div class="product-info">
-                        <h4>Sport Shoes</h4>
-                        <p>Barcode: 89910002</p>
-                        <div class="price-row">
-                            <div class="price">$40</div>
-                            <button class="add-btn">Add</button>
-                        </div>
-                    </div>
-                </div>
+                        <div class="product-info">
+                            <h4>{{ $product->name }}</h4>
+                            <div class="price-row">
+                                <div class="price">${{ $product->price }}</div>
 
-                <div class="product-card">
-                    <div class="product-image">Jacket</div>
-                    <div class="product-info">
-                        <h4>Winter Jacket</h4>
-                        <p>Barcode: 89910003</p>
-                        <div class="price-row">
-                            <div class="price">$80</div>
-                            <button class="add-btn">Add</button>
+                                <button class="add-btn">
+                                    Add
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
+        
         </div>
 
         <div class="cart">
@@ -113,5 +79,4 @@
             </button>
         </div>
     </div>
-</div>
 @endsection
