@@ -41,8 +41,8 @@
                             <h4><?php echo e($product->name); ?></h4>
                             <div class="price-row">
                                 <div class="price">$<?php echo e($product->price); ?></div>
-
-                                <button class="add-btn">
+                                <button class="add-btn"
+                                        onclick="addToCart('<?php echo e($product->name); ?>', <?php echo e($product->price); ?>)">
                                     Add
                                 </button>
                             </div>
@@ -55,25 +55,27 @@
 
         <div class="cart">
             <h3>Order Summary</h3>
-            <div class="cart-item">
-                <div>
-                    <strong>T-Shirt</strong><br>
-                    <small>Qty: 1</small>
-                </div>
-                <strong>$25</strong>
-            </div>
 
-            <div class="cart-item">
-                <div>
-                    <strong>Shoes</strong><br>
-                    <small>Qty: 1</small>
-                </div>
-                <strong>$40</strong>
-            </div>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background: #6E6EAA; color: white;">
+                    <tr style="width: 100%;height: 40px;">
+                        <th style="width: 100px; text-align: left;border:none;padding: 14px;">Product</th>
+                        <th style="width: 100px; text-align: left;border:none;padding: 14px;">Qty</th>
+                        <th style="width: 100px; text-align: left;border:none;padding: 14px;">Amount</th>
+                    </tr>
+                </thead>
 
-            <div class="total">
-                Total: $65
-            </div>
+                <tbody id="cart-body">
+                    <tr style="margin-bottom: 10px; border-bottom: 1px solid #ddd;">
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;"></td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
+                    </td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$0</td>
+            </tr>
+                </tbody>
+            </table>
 
             <button class="checkout-btn">
                 Complete Payment
@@ -81,4 +83,79 @@
         </div>
     </div>
 <?php $__env->stopSection(); ?>
+
+<script>
+    let cart = {};
+
+    function addToCart(name, price)
+    {
+        if (cart[name])
+        {
+            cart[name].qty += 1;
+        }
+        else
+        {
+            cart[name] = { name, price, qty: 1 };
+        }
+
+        renderCart();
+    }
+
+    function increaseQty(name)
+    {
+        cart[name].qty++;
+        renderCart();
+    }
+
+    function decreaseQty(name)
+    {
+        cart[name].qty--;
+
+        if (cart[name].qty <= 0)
+        {
+            delete cart[name];
+        }
+
+        renderCart();
+    }
+
+    function renderCart()
+    {
+        let tbody = document.getElementById('cart-body');
+        tbody.innerHTML = '';
+
+        let total = 0;
+
+        Object.values(cart).forEach(item => {
+
+            let amount = item.qty * item.price;
+            total += amount;
+
+            tbody.innerHTML += `
+                <tr style="margin-bottom: 10px; border-bottom: 1px solid #ddd;">
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">${item.name}</td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">
+                        <button style="width: 20px" onclick="decreaseQty('${item.name}')">-</button>
+                        ${item.qty}
+                        <button style="width: 20px" onclick="increaseQty('${item.name}')">+</button>
+                    </td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$${amount}</td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML +=
+            `
+            <tr style="margin-bottom: 10px; border-bottom: 1px solid #ddd;">
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;"></td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
+                    </td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$${total}</td>
+            </tr>`;
+    }
+</script>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\new git\pos_system\resources\views/home.blade.php ENDPATH**/ ?>

@@ -40,22 +40,37 @@
     }
 
     input:focus, select:focus{
-        border-color:#4338ca;
+        border-color:#6E6EAA;
     }
 
     .btn{
-        background:#4338ca;
+        background:#6E6EAA;
         color:white;
         border:none;
-        padding:12px 20px;
-        border-radius:10px;
+        padding:10px 18px;
+        border-radius:8px;
         cursor:pointer;
-        width:100%;
-        font-size:16px;
+        width:150px;
+        font-size:15px;
     }
 
     .btn:hover{
-        background:#3730a3;
+        background:#6060ab;
+    }
+
+    .cancel-product-btn{
+        display:inline-block;
+        background:#6E6EAA;
+        color:white;
+        padding:10px 18px;
+        border-radius:8px;
+        text-decoration:none;
+        font-size:15px;
+        cursor:pointer;
+    }
+
+    .cancel-product-btn:hover{
+        background:#6060ab;
     }
 
 </style>
@@ -111,6 +126,9 @@
         <button type="submit" class="btn">
             Save Product
         </button>
+        <a href="/products" class="cancel-product-btn">
+            Create Cancel 
+        </a>
 
     </form>
 

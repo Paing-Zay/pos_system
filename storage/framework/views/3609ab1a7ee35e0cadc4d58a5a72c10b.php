@@ -4,7 +4,7 @@
 
 <style>
     .form-container{
-        max-width:700px;
+        max-width:100%;
         margin:auto;
         background:white;
         padding:25px;
@@ -38,17 +38,32 @@
     }
 
     .btn{
-        background:#f59e0b;
+        background:#6E6EAA;
         color:white;
         border:none;
         padding:12px;
         border-radius:10px;
-        width:100%;
+        width:150px;
         cursor:pointer;
     }
 
     .btn:hover{
-        background:#d97706;
+        background:#6060ab;
+    }
+
+    .cancel-product-btn{
+        display:inline-block;
+        background:#6E6EAA;
+        color:white;
+        padding:10px 18px;
+        border-radius:8px;
+        text-decoration:none;
+        font-size:15px;
+        cursor:pointer;
+    }
+
+    .cancel-product-btn:hover{
+        background:#6060ab;
     }
 </style>
 
@@ -104,6 +119,9 @@
         <button type="submit" class="btn">
             Update Product
         </button>
+        <a href="/products" class="cancel-product-btn">
+            Update cancel
+        </a>
 
     </form>
 

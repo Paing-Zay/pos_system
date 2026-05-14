@@ -4,7 +4,6 @@
 
 <style>
     .sales-container{
-        padding: 30px;
         font-family: Arial, sans-serif;
     }
 
@@ -20,7 +19,7 @@
     }
 
     .add-sale-btn{
-        background: #4338ca;
+        background: #6E6EAA;
         color: white;
         border: none;
         padding: 10px 18px;
@@ -46,7 +45,7 @@
     }
 
     table thead{
-        background: #4338ca;
+        background: #6E6EAA;
         color: white;
     }
 
@@ -87,7 +86,7 @@
     }
 
     .edit-btn{
-        background: #4338ca;
+        background: #6E6EAA;
         color: white;
     }
 

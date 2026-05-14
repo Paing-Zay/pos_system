@@ -20,9 +20,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-
             $request->session()->regenerate();
-
             return redirect('/home');
         }
 
@@ -36,24 +34,9 @@ class AuthController extends Controller
         return view('home');
     }
 
-    public function settings()
-    {
-        return view('settings');
-    }
-
-    public function inventory()
-    {
-        return view('inventory');
-    }
-
     public function products()
     {
         return view('products');
-    }
-
-    public function report()
-    {
-        return view('reports');
     }
 
     public function sales()
@@ -61,8 +44,23 @@ class AuthController extends Controller
         return view('sales');
     }
 
+    public function inventory()
+    {
+        return view('inventory');
+    }
+
     public function customers()
     {
         return view('customers');
+    }
+
+    public function report()
+    {
+        return view('reports');
+    }
+
+    public function settings()
+    {
+        return view('settings');
     }
 }

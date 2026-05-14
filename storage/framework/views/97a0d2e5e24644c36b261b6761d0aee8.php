@@ -4,7 +4,6 @@
 
 <style>
     .product-container{
-        padding: 30px;
         font-family: Arial, sans-serif;
     }
 
@@ -21,7 +20,20 @@
 
     .add-product-btn{
         display:inline-block;
-        background:#4338ca;
+        background:#6E6EAA;
+        color:white;
+        padding:10px 18px;
+        border-radius:8px;
+        text-decoration:none;
+        font-size:15px;
+        cursor:pointer;
+        width: 90px;
+        text-align: center;
+    }
+
+    .add-new-product-btn{
+        display:inline-block;
+        background:#6E6EAA;
         color:white;
         padding:10px 18px;
         border-radius:8px;
@@ -30,11 +42,12 @@
         cursor:pointer;
     }
 
+    .add-new-product-btn:hover,
     .add-product-btn:hover{
-        background:#4338ca;
+        background:#6060ab;
     }
 
-    .product-card{
+    .product-cards{
         background: white;
         border-radius: 12px;
         padding: 20px;
@@ -47,7 +60,7 @@
     }
 
     table thead{
-        background: #4338ca;
+        background: #6E6EAA;
         color: white;
     }
 
@@ -93,13 +106,24 @@
     }
 
     .edit-btn{
-        background:#4338ca;
+        background:#6E6EAA;
         color: white;
     }
 
     .delete-btn{
-        background: #f44336;
-        color: white;
+        display:inline-block;
+        background:#f06a60;
+        color:white;
+        padding:10px 18px;
+        border-radius:8px;
+        font-size:15px;
+        cursor:pointer;
+        border:none;
+        width: 90px;
+    }
+
+    .delete-btn:hover{
+        background:#f44336;
     }
 
     .product-image{
@@ -115,12 +139,12 @@
     <div class="product-header">
         <h2>🛍️ Product Page</h2>
 
-        <a href="/products/create" class="add-product-btn">
+        <a href="/products/create" class="add-new-product-btn">
             + Add Product
         </a>
     </div>
 
-    <div class="product-card">
+    <div class="product-cards">
 
         <table>
             <thead>
@@ -144,7 +168,7 @@
                             <img src=""
                                 class="product-image">
                         </td>
-                        <td><?php echo e($product->id); ?></td>
+                        <td><?php echo e($loop->iteration); ?></td>
                         <td><?php echo e($product->name); ?></td>
                         <td><?php echo e($product->category); ?></td>
                         <td>$<?php echo e($product->price); ?></td>
@@ -160,10 +184,20 @@
                             <a href="/products/<?php echo e($product->id); ?>/edit" class="add-product-btn">
                                 Edit
                             </a>
+                            <form action="<?php echo e(route('products.destroy', $product->id)); ?>" 
+                                method="POST" 
+                                style="display:inline;">
 
-                            <button class="action-btn delete-btn">
-                                Delete
-                            </button>
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+
+                                <button type="submit" 
+                                        class="delete-btn"
+                                        onclick="return confirm('Are you sure you want to delete this product?')">
+                                    Delete
+                                </button>
+
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

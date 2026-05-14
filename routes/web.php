@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
 
+// login routes
 Route::get('/', function () {
-    return view('home');
+    return view('login');
 });
 Route::get(
     '/login',
@@ -18,45 +19,57 @@ Route::post(
     '/login',
     [AuthController::class, 'login']
 );
+
+// dashboard routes
 Route::get(
     '/home',
     [AuthController::class, 'index']
-);
-Route::get(
-    '/settings',
-    [AuthController::class, 'settings']
-);
-Route::get(
-    '/inventory',
-    [AuthController::class, 'inventory']
-);
+)->middleware('auth');
+Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
+
+// products routes
 Route::get(
     '/products',
     [AuthController::class, 'products']
-);
-Route::get(
-    '/reports',
-    [AuthController::class, 'report']
-);
+)->middleware('auth');
+Route::get('/products/create', [ProductController::class, 'create']);
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products', [ProductController::class, 'index'])->middleware('auth');
+Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->middleware('auth');
+Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('auth');
+
+// sales routes
 Route::get(
     '/sales',
     [AuthController::class, 'sales']
-);
+)->middleware('auth');
+
+// inventory routes
+Route::get(
+    '/inventory',
+    [AuthController::class, 'inventory']
+)->middleware('auth');
+
+// customers routes
 Route::get(
     '/customers',
     [AuthController::class, 'customers']
-);
+)->middleware('auth');
 
-Route::get('/products/create', [ProductController::class, 'create']);
-Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+// reports routes
+Route::get(
+    '/reports',
+    [AuthController::class, 'report']
+)->middleware('auth');
 
-Route::get('/home', [HomeController::class, 'index']);
+// settings routes
+Route::get(
+    '/settings',
+    [AuthController::class, 'settings']
+)->middleware('auth');
 
-Route::get('/products', [ProductController::class, 'index']);
-
-Route::get('/products/{id}/edit', [ProductController::class, 'edit']);
-Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-
+// logout route
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
