@@ -1,23 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="main">
-
-    <div class="topbar">
-        <input type="text" class="search-box" placeholder="Search product...">
-        <div class="profile">
-            <div>
-                <strong>Admin User</strong><br>
-                <small>Administrator</small>
-                <a href="/login">Login</a>
-            </div>
-
-            <div class="profile-circle">
-                A
-            </div>
-        </div>
-    </div>
-
     <div class="cards">
         <div class="card">
             <small>Total Sales</small>
@@ -46,72 +29,131 @@
                 <h2>Products</h2>
                 <input type="text" class="barcode-input" placeholder="Scan barcode...">
             </div>
-
             <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">T-Shirt</div>
-                    <div class="product-info">
-                        <h4>Classic T-Shirt</h4>
-                        <p>Barcode: 89910001</p>
-                        <div class="price-row">
-                            <div class="price">$25</div>
-                            <button class="add-btn">Add</button>
+                @foreach($products as $product)
+                    <div class="product-card">
+                        <div class="product-image">
+                            {{ $product->name }}
                         </div>
-                    </div>
-                </div>
 
-                <div class="product-card">
-                    <div class="product-image">Shoes</div>
-                    <div class="product-info">
-                        <h4>Sport Shoes</h4>
-                        <p>Barcode: 89910002</p>
-                        <div class="price-row">
-                            <div class="price">$40</div>
-                            <button class="add-btn">Add</button>
+                        <div class="product-info">
+                            <h4>{{ $product->name }}</h4>
+                            <div class="price-row">
+                                <div class="price">${{ $product->price }}</div>
+                                <button class="add-btn"
+                                        onclick="addToCart('{{ $product->name }}', {{ $product->price }})">
+                                    Add
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">Jacket</div>
-                    <div class="product-info">
-                        <h4>Winter Jacket</h4>
-                        <p>Barcode: 89910003</p>
-                        <div class="price-row">
-                            <div class="price">$80</div>
-                            <button class="add-btn">Add</button>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
+        
         </div>
 
         <div class="cart">
             <h3>Order Summary</h3>
-            <div class="cart-item">
-                <div>
-                    <strong>T-Shirt</strong><br>
-                    <small>Qty: 1</small>
-                </div>
-                <strong>$25</strong>
-            </div>
 
-            <div class="cart-item">
-                <div>
-                    <strong>Shoes</strong><br>
-                    <small>Qty: 1</small>
-                </div>
-                <strong>$40</strong>
-            </div>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background: #6E6EAA; color: white;">
+                    <tr style="width: 100%;height: 40px;">
+                        <th style="width: 100px; text-align: left;border:none;padding: 14px;">Product</th>
+                        <th style="width: 100px; text-align: left;border:none;padding: 14px;">Qty</th>
+                        <th style="width: 100px; text-align: left;border:none;padding: 14px;">Amount</th>
+                    </tr>
+                </thead>
 
-            <div class="total">
-                Total: $65
-            </div>
+                <tbody id="cart-body">
+                    <tr style="margin-bottom: 10px; border-bottom: 1px solid #ddd;">
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;"></td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
+                    </td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$0</td>
+            </tr>
+                </tbody>
+            </table>
 
             <button class="checkout-btn">
                 Complete Payment
             </button>
         </div>
     </div>
-</div>
 @endsection
+
+<script>
+    let cart = {};
+
+    function addToCart(name, price)
+    {
+        if (cart[name])
+        {
+            cart[name].qty += 1;
+        }
+        else
+        {
+            cart[name] = { name, price, qty: 1 };
+        }
+
+        renderCart();
+    }
+
+    function increaseQty(name)
+    {
+        cart[name].qty++;
+        renderCart();
+    }
+
+    function decreaseQty(name)
+    {
+        cart[name].qty--;
+
+        if (cart[name].qty <= 0)
+        {
+            delete cart[name];
+        }
+
+        renderCart();
+    }
+
+    function renderCart()
+    {
+        let tbody = document.getElementById('cart-body');
+        tbody.innerHTML = '';
+
+        let total = 0;
+
+        Object.values(cart).forEach(item => {
+
+            let amount = item.qty * item.price;
+            total += amount;
+
+            tbody.innerHTML += `
+                <tr style="margin-bottom: 10px; border-bottom: 1px solid #ddd;">
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">${item.name}</td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">
+                        <button style="width: 20px" onclick="decreaseQty('${item.name}')">-</button>
+                        ${item.qty}
+                        <button style="width: 20px" onclick="increaseQty('${item.name}')">+</button>
+                    </td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$${amount}</td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML +=
+            `
+            <tr style="margin-bottom: 10px; border-bottom: 1px solid #ddd;">
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;"></td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
+                    </td>
+
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$${total}</td>
+            </tr>`;
+    }
+</script>

@@ -29,6 +29,12 @@
             background:#111827;
             color:white;
             padding:25px;
+
+            position:fixed;
+            top:0;
+            left:0;
+            height:100vh;
+            overflow-y:auto;
         }
 
         .logo {
@@ -68,15 +74,16 @@
 
         .menu li:hover,
         .menu .active{
-            background:#4338ca;
+            background:#6E6EAA;
             color:white;
         }
 
         /* Main */
 
         .main{
-            flex:1;
+            margin-left:300px;
             padding:30px;
+            width: 100%;
         }
 
         .topbar{
@@ -106,7 +113,7 @@
             width:45px;
             height:45px;
             border-radius:50%;
-            background:#4338ca;
+            background:#6E6EAA;
             color:white;
             display:flex;
             justify-content:center;
@@ -191,7 +198,7 @@
 
         .product-image{
             height:170px;
-            background:linear-gradient(135deg,#6366f1,#4338ca);
+            background: linear-gradient(135deg, #6E6EAA, #8A8AC0);
             display:flex;
             justify-content:center;
             align-items:center;
@@ -224,11 +231,11 @@
         .price{
             font-size:22px;
             font-weight:bold;
-            color:#4338ca;
+            color:#6E6EAA;
         }
 
         .add-btn{
-            background:#4338ca;
+            background:#6E6EAA;
             color:white;
             border:none;
             padding:10px 18px;
@@ -267,7 +274,7 @@
         .checkout-btn{
             width:100%;
             padding:16px;
-            background:#4338ca;
+            background:#6E6EAA;
             color:white;
             border:none;
             border-radius:14px;
@@ -315,6 +322,20 @@
 
         }
 
+        .logout-btn{
+            background:none;
+            border:none;
+            color:#6E6EAA;
+            font-size:12px;
+            cursor:pointer;
+            padding:0;
+            margin-top:2px;
+        }
+
+        .logout-btn:hover{
+            text-decoration:underline;
+        }
+
     </style>
 
 </head>
@@ -328,7 +349,7 @@
 
     
     <ul class="menu">
-        <a href="/home"><li class="active">Dashboard</li></a>
+        <a href="/home"><li>Dashboard</li></a>
         <a href="/products"><li>Products</li></a>
         <a href="/sales"><li>Sales</li></a>
         <a href="/inventory"><li>Inventory</li></a>
@@ -339,7 +360,32 @@
 
 </div>
 
-<!-- Page Content -->
-        @yield('content')
+<div class="main">
+
+    <div class="topbar">
+        <input type="text" class="search-box" placeholder="Search product...">
+        <div class="profile">
+            <div>
+                <strong>Admin User</strong><br>
+                <small>Administrator</small>
+               <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="logout-btn">
+                        Logout
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-circle">
+                A
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    @yield('content')
+
+</div>
+        
 </body>
 </html>
