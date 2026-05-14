@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 
 // login routes
 Route::get('/', function () {
@@ -68,6 +69,13 @@ Route::get(
     '/settings',
     [AuthController::class, 'settings']
 )->middleware('auth');
+
+// cart routes
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart.index');
+
+Route::post('/cart/store', [CartController::class, 'store'])
+    ->name('cart.store');
 
 // logout route
 Route::post('/logout', function (Request $request) {

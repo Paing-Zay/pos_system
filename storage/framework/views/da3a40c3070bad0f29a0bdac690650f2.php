@@ -251,16 +251,13 @@
             padding:25px;
             box-shadow:0 6px 20px rgba(0,0,0,0.05);
         }
-        .cart-header{
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
 
-        .cart-header h2,a{
+        .cart h2{
             text-decoration: none;
             color: #6E6EAA;
             font-size: 25px;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .cart-item{
