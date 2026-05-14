@@ -6,7 +6,7 @@
     <title>POS Dashboard</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
 
         *{
@@ -251,9 +251,16 @@
             padding:25px;
             box-shadow:0 6px 20px rgba(0,0,0,0.05);
         }
+        .cart-header{
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-        .cart h3{
-            margin-bottom:20px;
+        .cart-header h2,a{
+            text-decoration: none;
+            color: #6E6EAA;
+            font-size: 25px;
         }
 
         .cart-item{
@@ -349,13 +356,48 @@
 
     
     <ul class="menu">
-        <a href="/home"><li>Dashboard</li></a>
-        <a href="/products"><li>Products</li></a>
-        <a href="/sales"><li>Sales</li></a>
-        <a href="/inventory"><li>Inventory</li></a>
-        <a href="/customers"><li>Customers</li></a>
-        <a href="/reports"><li>Reports</li></a>
-        <a href="/settings"><li>Settings</li></a>
+        <li>
+            <a href="/home">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="/products">
+                <i class="fa-solid fa-box"></i>
+                Products
+            </a>
+        </li>
+        <li>
+            <a href="/sales">
+                <i class="fa-solid fa-chart-line"></i>
+                Sales
+            </a>
+        </li>
+        <li>
+            <a href="/inventory">
+                <i class="fa-solid fa-warehouse"></i>
+                Inventory
+            </a>
+        </li>
+        <li>
+            <a href="/customers">
+                <i class="fa-solid fa-users"></i>
+                Customers
+            </a>
+        </li>
+        <li>
+            <a href="/reports">
+                <i class="fa-solid fa-file-alt"></i>
+                Reports
+            </a>
+        </li>
+        <li>
+            <a href="/settings">
+                <i class="fa-solid fa-cog"></i>
+                Settings
+            </a>
+        </li>
     </ul>
 
 </div>

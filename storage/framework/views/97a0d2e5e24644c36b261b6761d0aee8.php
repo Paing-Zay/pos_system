@@ -27,7 +27,7 @@
         text-decoration:none;
         font-size:15px;
         cursor:pointer;
-        width: 90px;
+        width: 100px;
         text-align: center;
     }
 
@@ -114,12 +114,12 @@
         display:inline-block;
         background:#f06a60;
         color:white;
-        padding:10px 18px;
+        padding:10px 10px;
         border-radius:8px;
         font-size:15px;
         cursor:pointer;
         border:none;
-        width: 90px;
+        width: 100px;
     }
 
     .delete-btn:hover{
@@ -182,7 +182,7 @@
 
                         <td>
                             <a href="/products/<?php echo e($product->id); ?>/edit" class="add-product-btn">
-                                Edit
+                                <i class="fa-solid fa-pencil"></i> Edit
                             </a>
                             <form action="<?php echo e(route('products.destroy', $product->id)); ?>" 
                                 method="POST" 
@@ -194,7 +194,7 @@
                                 <button type="submit" 
                                         class="delete-btn"
                                         onclick="return confirm('Are you sure you want to delete this product?')">
-                                    Delete
+                                    <i class="fa-solid fa-trash-can"></i> Delete
                                 </button>
 
                             </form>

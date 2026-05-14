@@ -53,8 +53,10 @@
         </div>
 
         <div class="cart">
-            <h3>Order Summary</h3>
-
+            <div class="cart-header">
+                <h2>Order Summary</h2>
+                <a href=""><i class="fa-solid fa-plus"></i></a>
+            </div>
             <table style="width: 100%; border-collapse: collapse;">
                 <thead style="background: #6E6EAA; color: white;">
                     <tr style="width: 100%;height: 40px;">
