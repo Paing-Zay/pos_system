@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PosController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
@@ -23,10 +23,10 @@ Route::post(
 
 // dashboard routes
 Route::get(
-    '/home',
+    '/dashboard',
     [AuthController::class, 'index']
 )->middleware('auth');
-Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
 // products routes
 Route::get(

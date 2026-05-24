@@ -21,7 +21,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/home');
+            return redirect('/dashboard');
         }
 
         return back()->withErrors([
@@ -31,7 +31,7 @@ class AuthController extends Controller
 
     public function index()
     {
-        return view('home');
+        return view('dashboard');
     }
 
     public function products()

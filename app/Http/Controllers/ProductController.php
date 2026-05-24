@@ -47,6 +47,7 @@ class ProductController extends Controller
             'cost_price' => $request->cost_price,
             'stock' => $request->stock,
             'status' => $request->status,
+            'updated_at' => now(),
         ]);
 
         return redirect('/products')->with('success', 'Product updated successfully!');

@@ -1,71 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
-<style>
-    .form-container{
-        max-width:100%;
-        margin:auto;
-        background:white;
-        padding:25px;
-        border-radius:15px;
-        box-shadow:0 6px 20px rgba(0,0,0,0.08);
-        font-family:Arial, sans-serif;
-    }
-
-    .form-title{
-        font-size:24px;
-        margin-bottom:20px;
-        font-weight:bold;
-        color:#111827;
-    }
-
-    .form-group{
-        margin-bottom:15px;
-    }
-
-    label{
-        display:block;
-        margin-bottom:6px;
-        font-weight:600;
-    }
-
-    input, select{
-        width:100%;
-        padding:12px;
-        border:1px solid #ddd;
-        border-radius:10px;
-    }
-
-    .btn{
-        background:#6E6EAA;
-        color:white;
-        border:none;
-        padding:12px;
-        border-radius:10px;
-        width:150px;
-        cursor:pointer;
-    }
-
-    .btn:hover{
-        background:#6060ab;
-    }
-
-    .cancel-product-btn{
-        display:inline-block;
-        background:#6E6EAA;
-        color:white;
-        padding:10px 18px;
-        border-radius:8px;
-        text-decoration:none;
-        font-size:15px;
-        cursor:pointer;
-    }
-
-    .cancel-product-btn:hover{
-        background:#6060ab;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('../css/products.css') }}">
 
 <div class="form-container">
 
