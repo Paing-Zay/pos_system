@@ -351,14 +351,39 @@
 .customer-info{
     display:flex;
     justify-content: space-between;
+    gap:20px;
+    flex-wrap:wrap;
     margin-bottom:25px;
 }
 
-.input-group input{
+.input-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-width:220px;
+    flex:1;
+}
+
+.input-group label{
+    font-weight:700;
+    color:#374151;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
     padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
     font-size:15px;
+    outline:none;
+    background:#fff;
+}
+
+.input-group input:disabled,
+.input-group select:disabled{
+    background:#f3f4f6;
+    color:#6b7280;
 }
 
 /* Table */

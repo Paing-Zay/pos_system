@@ -1,10 +1,10 @@
-
+﻿
 
 <?php $__env->startSection('content'); ?>
+<link rel="stylesheet" href="<?php echo e(asset('../css/products.css')); ?>">
 
 <style>
     .inventory-container{
-        padding: 30px;
         font-family: Arial, sans-serif;
     }
 
@@ -20,17 +20,28 @@
     }
 
     .add-product-btn{
-        background: #4338ca;
+        background: #6E6EAA;
         color: white;
         border: none;
+        width: auto;
         padding: 10px 18px;
         border-radius: 8px;
         cursor: pointer;
         font-size: 15px;
+        text-decoration: none;
+        display: inline-block;
     }
 
     .add-product-btn:hover{
-        background: #43a047;
+        background: #5a5a8c;
+    }
+
+    .filter-row{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 20px;
+        align-items: center;
     }
 
     .inventory-card{
@@ -40,24 +51,24 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
 
-    table{
+    .inventory-card table{
         width: 100%;
         border-collapse: collapse;
     }
 
-    table thead{
-        background: #4338ca;
+    .inventory-card table thead{
+        background: #6E6EAA;
         color: white;
     }
 
-    table th,
-    table td{
+    .inventory-card table th,
+    .inventory-card table td{
         padding: 14px;
         text-align: left;
         border-bottom: 1px solid #ddd;
     }
 
-    table tbody tr:hover{
+    .inventory-card table tbody tr:hover{
         background: #f5f5f5;
     }
 
@@ -89,16 +100,33 @@
         border-radius: 6px;
         cursor: pointer;
         margin-right: 5px;
+        color: white;
+        text-decoration: none;
     }
 
     .edit-btn{
-        background:#4338ca;
-        color: white;
+       display:inline-block;
+        background:#6E6EAA;
+        color:white;
+        padding:10px 18px;
+        border-radius:8px;
+        text-decoration:none;
+        font-size:15px;
+        cursor:pointer;
+        width: 100px;
+        text-align: center;
     }
 
     .delete-btn{
-        background: #f44336;
-        color: white;
+        display:inline-block;
+        background:#f06a60;
+        color:white;
+        padding:10px 10px;
+        border-radius:8px;
+        font-size:15px;
+        cursor:pointer;
+        border:none;
+        width: 100px;
     }
 </style>
 
@@ -107,100 +135,84 @@
     <div class="inventory-header">
         <h2>📦 Inventory Page</h2>
 
-        <button class="add-product-btn">
-            + Add Product
-        </button>
+        <a href="<?php echo e(url('/products/create')); ?>" class="add-product-btn">
+            + Add Inventory
+        </a>
     </div>
 
     <div class="inventory-card">
+        <form method="GET" action="<?php echo e(url('/inventory')); ?>" class="filter-row">
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category">
+                    <option value="">All Categories</option>
+                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($cat); ?>" <?php echo e((isset($category) && $category === $cat) ? 'selected' : ''); ?>><?php echo e($cat); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                    <option value="">All Statuses</option>
+                    <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($key); ?>" <?php echo e((isset($status) && $status === $key) ? 'selected' : ''); ?>><?php echo e($label); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">Filter</button>
+            <a href="<?php echo e(url('/inventory')); ?>" class="cancel-product-btn">Reset</a>
+        </form>
 
         <table>
             <thead>
                 <tr>
                     <th>Product ID</th>
-                    <th>Product Name</th>
+                    <th>Name</th>
                     <th>Category</th>
                     <th>Price</th>
                     <th>Stock</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
 
             <tbody>
+                <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <tr>
+                        <td><?php echo e($product->product_code); ?></td>
+                        <td><?php echo e($product->name); ?></td>
+                        <td><?php echo e($product->category ?? '-'); ?></td>
+                        <td>Ks<?php echo e($product->price); ?></td>
+                        <td><?php echo e($product->stock); ?></td>
+                        <td>
+                            <span class="stock <?php echo e($product->status === 'in_stock' ? 'in-stock' : ($product->status === 'low_stock' ? 'low-stock' : 'out-stock')); ?>">
+                                <?php echo e($product->status === 'in_stock' ? 'In Stock' : ($product->status === 'low_stock' ? 'Low Stock' : 'Out of Stock')); ?>
 
-                <tr>
-                    <td>P001</td>
-                    <td>Laptop</td>
-                    <td>Electronics</td>
-                    <td>$700</td>
-                    <td>25</td>
-                    <td>
-                        <span class="stock in-stock">
-                            In Stock
-                        </span>
-                    </td>
-                    <td>
-                        <button class="action-btn edit-btn">
-                            Edit
-                        </button>
-
-                        <button class="action-btn delete-btn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>P002</td>
-                    <td>Mouse</td>
-                    <td>Accessories</td>
-                    <td>$20</td>
-                    <td>5</td>
-                    <td>
-                        <span class="stock low-stock">
-                            Low Stock
-                        </span>
-                    </td>
-                    <td>
-                        <button class="action-btn edit-btn">
-                            Edit
-                        </button>
-
-                        <button class="action-btn delete-btn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>P003</td>
-                    <td>Keyboard</td>
-                    <td>Accessories</td>
-                    <td>$35</td>
-                    <td>0</td>
-                    <td>
-                        <span class="stock out-stock">
-                            Out of Stock
-                        </span>
-                    </td>
-                    <td>
-                        <button class="action-btn edit-btn">
-                            Edit
-                        </button>
-
-                        <button class="action-btn delete-btn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-
+                            </span>
+                        </td>
+                        <td>
+                            <a href="<?php echo e(url('/products/' . $product->id . '/edit')); ?>" class="action-btn edit-btn">Edit</a>
+                            <form action="<?php echo e(url('/products/' . $product->id)); ?>" method="POST" style="display:inline-block; margin:0;">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                                <button type="submit" class="action-btn delete-btn" onclick="return confirm('Delete this inventory item?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding: 20px;">No inventory items found.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
-
     </div>
 
 </div>
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\new git\pos_system\resources\views/inventory.blade.php ENDPATH**/ ?>

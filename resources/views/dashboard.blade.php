@@ -5,7 +5,7 @@
     <div class="cards">
         <div class="card">
             <small>Total Sales</small>
-            <h2>$25,400</h2>
+            <h2>Ks25,400</h2>
         </div>
 
         <div class="card">
@@ -47,11 +47,11 @@
 
                             <div class="price-row">
                                 <div class="price">
-                                    ${{ $product->price }}
+                                    Ks{{ $product->price }}
                                 </div>
 
                                 <button class="add-btn"
-                                        onclick="addToCard('{{ $product->name }}', {{ $product->price }})">
+                                        onclick="addToCart({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->price }})">
                                     Add
                                 </button>
                             </div>
@@ -63,6 +63,9 @@
                 @endforeach
 
             </div>
+            <div id="not-found" style="display:none; padding:20px; text-align:center; color:#888; font-size:20px;">
+                        Product not found
+                    </div>
         </div>
 
         <!-- Card Button -->
@@ -85,7 +88,7 @@
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$0</td>
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks0</td>
             </tr>
                 </tbody>
             </table>
@@ -130,6 +133,27 @@
                             value="{{ date('Y-m-d') }}" style="width:100px;">
                     </div>
 
+                    <!-- Payment Status -->
+                    <div class="input-group">
+                        <label><strong>Payment Status</strong></label>
+                        <select id="payment-status" style="width:200px; padding: 8px; border-radius: 6px;">
+                            <option value="paid">Paid</option>
+                            <option value="partial">Partial</option>
+                            <option value="unpaid">Unpaid</option>
+                        </select>
+                    </div>
+
+                    <!-- Auto Payment Summary -->
+                    <div class="input-group">
+                        <label><strong>Paid Amount</strong></label>
+                        <input type="number" id="paid-amount" min="0" step="0.01" style="width:200px; background:#f4f4f4;">
+                    </div>
+
+                    <div class="input-group">
+                        <label><strong>Due Amount</strong></label>
+                        <input type="text" id="due-amount" readonly style="width:200px; background:#f4f4f4;">
+                    </div>
+
                 </div>
 
                 <!-- Table -->
@@ -154,7 +178,7 @@
                 </div>
 
                 <!-- Button -->
-                <button class="checkout-btn">
+                <button class="checkout-btn" onclick="completePayment()">
                     Complete Payment
                 </button>
 
@@ -165,17 +189,22 @@
 @endsection
 
 <script>
-    let card = {};
+    const csrfToken = '{{ csrf_token() }}';
+    const salesCompleteUrl = '{{ url('/sales/complete') }}';
+    let cart = {};
 
-   function addToCard(name, price)
+    function addToCart(productId, name, price)
     {
-        if (card[name])
+        const key = productId.toString();
+
+        if (cart[key])
         {
-            card[name].qty += 1;
+            cart[key].qty += 1;
         }
         else
         {
-            card[name] = {
+            cart[key] = {
+                product_id: productId,
                 name: name,
                 price: price,
                 qty: 1
@@ -185,24 +214,26 @@
         renderCard();
     }
 
-    function increaseQty(name)
+    function increaseQty(productId)
     {
-        card[name].qty++;
-
+        const key = productId.toString();
+        cart[key].qty++;
         renderCard();
     }
 
-    function decreaseQty(name)
+    function decreaseQty(productId)
     {
-        card[name].qty--;
+        const key = productId.toString();
+        cart[key].qty--;
 
-        if (card[name].qty <= 0)
+        if (cart[key].qty <= 0)
         {
-            delete card[name];
+            delete cart[key];
         }
 
         renderCard();
     }
+
     function renderCard()
     {
         let tbody = document.getElementById('card-body');
@@ -210,8 +241,7 @@
 
         let total = 0;
 
-        Object.values(card).forEach(item => {
-
+        Object.values(cart).forEach(item => {
             let amount = item.qty * item.price;
             total += amount;
 
@@ -220,12 +250,12 @@
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">${item.name}</td>
 
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">
-                        <button style="width: 20px" onclick="decreaseQty('${item.name}')">-</button>
+                        <button style="width: 20px" onclick="decreaseQty(${item.product_id})">-</button>
                         ${item.qty}
-                        <button style="width: 20px" onclick="increaseQty('${item.name}')">+</button>
+                        <button style="width: 20px" onclick="increaseQty(${item.product_id})">+</button>
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$${amount}</td>
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks${amount}</td>
                 </tr>
             `;
         });
@@ -238,14 +268,19 @@
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">$${total}</td>
+                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks${total}</td>
             </tr>`;
     }
 
     function openCardModal()
     {
-        document.getElementById('card-modal').style.display = 'flex';
+        if (Object.keys(cart).length === 0)
+        {
+            alert('Please add at least one product before completing payment.');
+            return;
+        }
 
+        document.getElementById('card-modal').style.display = 'flex';
         renderModalCard();
     }
 
@@ -254,31 +289,57 @@
         document.getElementById('card-modal').style.display = 'none';
     }
 
+    function updatePaymentSummary()
+    {
+        const status = document.getElementById('payment-status').value;
+        const paidInput = document.getElementById('paid-amount');
+        const total = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
+
+        let paidAmount = 0;
+        let dueAmount = total;
+
+        if (status === 'paid') {
+            paidInput.disabled = true;
+            paidAmount = total;
+            dueAmount = 0;
+        } else if (status === 'unpaid') {
+            paidInput.disabled = true;
+            paidAmount = 0;
+            dueAmount = total;
+        } else {
+            paidInput.disabled = false;
+            let rawValue = parseFloat(paidInput.value);
+            if (isNaN(rawValue) || rawValue < 0) {
+                rawValue = 0;
+            }
+            if (rawValue > total) {
+                rawValue = total;
+            }
+            paidInput.value = rawValue.toFixed(1);
+            paidAmount = rawValue;
+            dueAmount = total - paidAmount;
+        }
+
+        paidInput.value = paidAmount.toFixed(2);
+        document.getElementById('due-amount').value = `Ks${dueAmount.toFixed(2)}`;
+    }
+
     function renderModalCard()
     {
         let tbody = document.getElementById('modal-card-body');
-
         tbody.innerHTML = '';
 
         let total = 0;
 
-        Object.values(card).forEach(item => {
-
+        Object.values(cart).forEach(item => {
             let amount = item.qty * item.price;
-
             total += amount;
 
             tbody.innerHTML += `
                 <tr>
                     <td style="padding:14px;">${item.name}</td>
-
-                    <td style="padding:14px;">
-                        ${item.qty}
-                    </td>
-
-                    <td style="padding:14px;">
-                        $${amount}
-                    </td>
+                    <td style="padding:14px;">${item.qty}</td>
+                    <td style="padding:14px;">Ks${amount}</td>
                 </tr>
             `;
         });
@@ -286,25 +347,86 @@
         tbody.innerHTML += `
             <tr>
                 <td></td>
-
-                <td style="padding:14px;">
-                    <strong>Total:</strong>
-                </td>
-
-                <td style="padding:14px;">
-                    <strong>$${total}</strong>
-                </td>
+                <td style="padding:14px;"><strong>Total:</strong></td>
+                <td style="padding:14px;"><strong>Ks${total}</strong></td>
             </tr>
         `;
+
+        updatePaymentSummary();
+    }
+
+    function completePayment()
+    {
+        if (Object.keys(cart).length === 0)
+        {
+            alert('Your cart is empty. Add products first.');
+            return;
+        }
+
+        const customerName = document.getElementById('customer-name').value;
+        const orderDate = document.getElementById('order-date').value;
+        const status = document.getElementById('payment-status').value;
+        const total = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
+        const paidAmount = parseFloat(document.getElementById('paid-amount').value) || 0;
+        const items = Object.values(cart).map(item => ({
+            product_id: item.product_id,
+            name: item.name,
+            price: item.price,
+            qty: item.qty,
+        }));
+
+        fetch(salesCompleteUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({
+                customer_name: customerName,
+                order_date: orderDate,
+                status: status,
+                pay_amount: paidAmount,
+                due_amount: total - paidAmount,
+                items: items,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success)
+            {
+                alert('Payment completed and sale saved successfully.');
+                cart = {};
+                renderCard();
+                closeCardModal();
+            }
+            else
+            {
+                alert('Unable to save the sale. Please try again.');
+            }
+        })
+        .catch(() => {
+            alert('Unable to save the sale. Please try again.');
+        });
     }
 
     document.addEventListener('DOMContentLoaded', function()
     {
+        document.getElementById('payment-status').addEventListener('change', updatePaymentSummary);
+
+        const paymentStatus = document.getElementById('payment-status');
+        const paidAmountInput = document.getElementById('paid-amount');
+
+        paymentStatus.addEventListener('change', updatePaymentSummary);
+        paidAmountInput.addEventListener('input', updatePaymentSummary);
+
         const searchBox = document.getElementById('search-box');
+        const notFound = document.getElementById('not-found');
 
         searchBox.addEventListener('keyup', function()
         {
             const value = this.value.toLowerCase();
+
+            let found = false;
 
             document.querySelectorAll('.product-card').forEach(function(card)
             {
@@ -313,12 +435,23 @@
                 if (name.includes(value))
                 {
                     card.style.display = 'block';
+                    found = true;
                 }
                 else
                 {
                     card.style.display = 'none';
                 }
             });
+
+            // show / hide not found message
+            if (found)
+            {
+                notFound.style.display = 'none';
+            }
+            else
+            {
+                notFound.style.display = 'block';
+            }
         });
     });
 </script>
