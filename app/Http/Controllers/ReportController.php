@@ -9,10 +9,9 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Report::query();
-
+        $query    = Report::query();
         $fromDate = $request->query('from_date');
-        $toDate = $request->query('to_date');
+        $toDate   = $request->query('to_date');
 
         if ($fromDate) {
             $query->where('date', '>=', $fromDate);
@@ -25,11 +24,11 @@ class ReportController extends Controller
         $reports = $query->orderBy('date', 'desc')->get();
 
         $summary = [
-            'sales' => $reports->sum('sales'),
-            'orders' => $reports->sum('orders'),
+            'sales'     => $reports->sum('sales'),
+            'orders'    => $reports->sum('orders'),
             'customers' => $reports->sum('customers'),
-            'products' => $reports->sum('products'),
-            'revenue' => $reports->sum('revenue'),
+            'products'  => $reports->sum('products'),
+            'revenue'   => $reports->sum('revenue'),
         ];
 
         return view('reports', compact('reports', 'summary', 'fromDate', 'toDate'));
@@ -43,12 +42,12 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'date' => 'required|date',
-            'sales' => 'required|integer|min:0',
-            'orders' => 'required|integer|min:0',
+            'date'      => 'required|date',
+            'sales'     => 'required|integer|min:0',
+            'orders'    => 'required|integer|min:0',
             'customers' => 'required|integer|min:0',
-            'products' => 'required|integer|min:0',
-            'revenue' => 'required|numeric|min:0',
+            'products'  => 'required|integer|min:0',
+            'revenue'   => 'required|numeric|min:0',
         ]);
 
         Report::create($validated);
@@ -68,12 +67,12 @@ class ReportController extends Controller
         $report = Report::findOrFail($id);
 
         $validated = $request->validate([
-            'date' => 'required|date',
-            'sales' => 'required|integer|min:0',
-            'orders' => 'required|integer|min:0',
+            'date'      => 'required|date',
+            'sales'     => 'required|integer|min:0',
+            'orders'    => 'required|integer|min:0',
             'customers' => 'required|integer|min:0',
-            'products' => 'required|integer|min:0',
-            'revenue' => 'required|numeric|min:0',
+            'products'  => 'required|integer|min:0',
+            'revenue'   => 'required|numeric|min:0',
         ]);
 
         $report->update($validated);

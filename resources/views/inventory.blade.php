@@ -185,7 +185,7 @@
                         <td>{{ $product->product_code }}</td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->category ?? '-' }}</td>
-                        <td>Ks{{ $product->price }}</td>
+                        <td>{{ $product->price }} Ks</td>
                         <td>{{ $product->stock }}</td>
                         <td>
                             <span class="stock {{ $product->status === 'in_stock' ? 'in-stock' : ($product->status === 'low_stock' ? 'low-stock' : 'out-stock') }}">

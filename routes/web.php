@@ -16,27 +16,15 @@ use App\Http\Controllers\CustomerController;
 Route::get('/', function () {
     return view('login');
 });
-Route::get(
-    '/login',
-    [AuthController::class, 'loginForm']
-);
-Route::post(
-    '/login',
-    [AuthController::class, 'login']
-);
+Route::get('/login', [AuthController::class, 'loginForm']);
+Route::post('/login', [AuthController::class, 'login']);
 
 // dashboard routes
-Route::get(
-    '/dashboard',
-    [AuthController::class, 'index']
-)->middleware('auth');
+Route::get('/dashboard', [AuthController::class, 'index'])->middleware('auth');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
 // products routes
-Route::get(
-    '/products',
-    [AuthController::class, 'products']
-)->middleware('auth');
+Route::get('/products', [AuthController::class, 'products'])->middleware('auth');
 Route::get('/products/create', [ProductController::class, 'create']);
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 Route::get('/products', [ProductController::class, 'index'])->middleware('auth');
@@ -45,15 +33,8 @@ Route::put('/products/{id}', [ProductController::class, 'update'])->name('produc
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('auth');
 
 // sales routes
-Route::get(
-    '/sales',
-    [SalesController::class, 'index']
-)->middleware('auth');
-
-Route::post(
-    '/sales/complete',
-    [SalesController::class, 'store']
-)->middleware('auth')->name('sales.complete');
+Route::get('/sales', [SalesController::class, 'index'])->middleware('auth');
+Route::post('/sales/complete', [SalesController::class, 'store'])->middleware('auth')->name('sales.complete');
 
 // inventory routes
 Route::get('/inventory', [InventoryController::class, 'index'])->middleware('auth');
@@ -72,17 +53,11 @@ Route::put('/reports/{id}', [ReportController::class, 'update'])->middleware('au
 Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->middleware('auth')->name('reports.destroy');
 
 // settings routes
-Route::get(
-    '/settings',
-    [AuthController::class, 'settings']
-)->middleware('auth');
+Route::get('/settings', [AuthController::class, 'settings'])->middleware('auth');
 
 // cart routes
-Route::get('/cart', [CartController::class, 'index'])
-    ->name('cart.index');
-
-Route::post('/cart/store', [CartController::class, 'store'])
-    ->name('cart.store');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/store', [CartController::class, 'store'])->name('cart.store');
 
 // logout route
 Route::post('/logout', function (Request $request) {

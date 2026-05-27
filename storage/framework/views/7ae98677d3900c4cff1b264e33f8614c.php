@@ -133,9 +133,9 @@
                         <td>#INV<?php echo e(str_pad($sale->id, 3, '0', STR_PAD_LEFT)); ?></td>
                         <td><?php echo e($sale->customer_name ?: 'Guest'); ?></td>
                         <td><?php echo e($sale->created_at->format('d M Y')); ?></td>
-                        <td>$<?php echo e(number_format($sale->total_amount, 2)); ?></td>
-                        <td>$<?php echo e(number_format($sale->pay_amount ?? 0, 2)); ?></td>
-                        <td>$<?php echo e(number_format($sale->due_amount ?? 0, 2)); ?></td>
+                        <td><?php echo e(number_format($sale->total_amount, 2)); ?> Ks</td>
+                        <td><?php echo e(number_format($sale->pay_amount ?? 0, 2)); ?> Ks</td>
+                        <td><?php echo e(number_format($sale->due_amount ?? 0, 2)); ?> Ks</td>
                         <td>
                             <span class="status <?php echo e($sale->status == 1 ? 'paid' : ($sale->status == 2 ? 'pending' : 'unpaid')); ?>"><?php echo e($sale->status == 1 ? 'Paid' : ($sale->status == 2 ? 'Partial' : 'Unpaid')); ?></span>
                         </td>
@@ -181,8 +181,8 @@
                     <tr>
                         <td><?php echo e(optional($item->product)->name ?? 'Product #' . $item->product_id); ?></td>
                         <td><?php echo e($quantity); ?></td>
-                        <td>$<?php echo e(number_format($item->price, 2)); ?></td>
-                        <td>$<?php echo e(number_format($lineTotal, 2)); ?></td>
+                        <td><?php echo e(number_format($item->price, 2)); ?> Ks</td>
+                        <td><?php echo e(number_format($lineTotal, 2)); ?> Ks</td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>

@@ -48,8 +48,7 @@
 
                             <div class="price-row">
                                 <div class="price">
-                                    Ks<?php echo e($product->price); ?>
-
+                                    <?php echo e($product->price); ?> Ks
                                 </div>
 
                                 <button class="add-btn"
@@ -90,7 +89,7 @@
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks0</td>
+                    <td style="width: 100px; text-align: right;border:none;padding: 14px;">0 Ks</td>
             </tr>
                 </tbody>
             </table>
@@ -132,7 +131,7 @@
                         <label><strong>Date</strong></label>
                         <input type="date"
                             id="order-date"
-                            value="<?php echo e(date('Y-m-d')); ?>" style="width:100px;">
+                            value="<?php echo e(date('Y-m-d')); ?>" style="width:200px;">
                     </div>
 
                     <!-- Payment Status -->
@@ -148,7 +147,7 @@
                     <!-- Auto Payment Summary -->
                     <div class="input-group">
                         <label><strong>Paid Amount</strong></label>
-                        <input type="number" id="paid-amount" min="0" step="0.01" style="width:200px; background:#f4f4f4;">
+                        <input type="text" id="paid-amount" min="0" step="0.01" style="width:200px; background:#f4f4f4;">
                     </div>
 
                     <div class="input-group">
@@ -257,7 +256,7 @@
                         <button style="width: 20px" onclick="increaseQty(${item.product_id})">+</button>
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks${amount}</td>
+                    <td style="width: 100px; text-align: right;border:none;padding: 14px;">${amount} Ks</td>
                 </tr>
             `;
         });
@@ -270,7 +269,7 @@
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks${total}</td>
+                    <td style="width: 100px; text-align: right;border:none;padding: 14px;">${total} Ks</td>
             </tr>`;
     }
 
@@ -322,8 +321,8 @@
             dueAmount = total - paidAmount;
         }
 
-        paidInput.value = paidAmount.toFixed(2);
-        document.getElementById('due-amount').value = `Ks${dueAmount.toFixed(2)}`;
+        paidInput.value = `${paidAmount} Ks`;
+        document.getElementById('due-amount').value = `${dueAmount} Ks`;
     }
 
     function renderModalCard()
@@ -341,7 +340,7 @@
                 <tr>
                     <td style="padding:14px;">${item.name}</td>
                     <td style="padding:14px;">${item.qty}</td>
-                    <td style="padding:14px;">Ks${amount}</td>
+                    <td style="padding:14px; text-align: right;">${amount} Ks</td>
                 </tr>
             `;
         });
@@ -350,7 +349,7 @@
             <tr>
                 <td></td>
                 <td style="padding:14px;"><strong>Total:</strong></td>
-                <td style="padding:14px;"><strong>Ks${total}</strong></td>
+                <td style="padding:14px; text-align: right;"><strong>${total} Ks</strong></td>
             </tr>
         `;
 

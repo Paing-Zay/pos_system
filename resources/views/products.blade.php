@@ -33,8 +33,7 @@
                 @foreach($products as $product)
                     <tr>
                         <td>
-                            <img src=""
-                                class="product-image">
+                            <img src="" class="product-image">
                         </td>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $product->name }}</td>
@@ -51,16 +50,10 @@
                             <a href="/products/{{ $product->id }}/edit" class="add-product-btn">
                                 <i class="fa-solid fa-pencil"></i> Edit
                             </a>
-                            <form action="{{ route('products.destroy', $product->id) }}" 
-                                method="POST" 
-                                style="display:inline;">
-
+                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-
-                                <button type="submit" 
-                                        class="delete-btn"
-                                        onclick="return confirm('Are you sure you want to delete this product?')">
+                                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this product?')">
                                     <i class="fa-solid fa-trash-can"></i> Delete
                                 </button>
 
