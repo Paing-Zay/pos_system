@@ -12,7 +12,10 @@ return new class () extends Migration {
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('customer_name')->nullable();
+            $table->integer('status')->default(0);
+            $table->decimal('pay_amount', 10, 2)->default(0);
+            $table->decimal('due_amount', 10, 2)->default(0);
             $table->decimal('total_amount', 10, 2);
             $table->timestamps();
         });

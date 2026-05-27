@@ -4,7 +4,6 @@
 
 <style>
     .customer-container{
-        padding: 30px;
         font-family: Arial, sans-serif;
     }
 
@@ -20,17 +19,18 @@
     }
 
     .add-customer-btn{
-        background: #4338ca;
-        color: white;
-        border: none;
-        padding: 10px 18px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 15px;
+        display:inline-block;
+        background:#6E6EAA;
+        color:white;
+        padding:10px 18px;
+        border-radius:8px;
+        text-decoration:none;
+        font-size:15px;
+        cursor:pointer;
     }
 
     .add-customer-btn:hover{
-        background: #43a047;
+        background: #6060ab;
     }
 
     .customer-card{
@@ -46,7 +46,7 @@
     }
 
     table thead{
-        background: #4338ca;
+        background: #6E6EAA;
         color: white;
     }
 
@@ -87,7 +87,7 @@
     }
 
     .edit-btn{
-        background: #4338ca;
+        background: #6E6EAA;
         color: white;
     }
 
@@ -102,10 +102,17 @@
     <div class="customer-header">
         <h2>👥 Customer Page</h2>
 
-        <button class="add-customer-btn">
+        <a href="<?php echo e(route('customers.create')); ?>" class="add-customer-btn">
             + Add Customer
-        </button>
+        </a>
     </div>
+
+    <?php if(session('success')): ?>
+        <div class="mb-4 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+            <?php echo e(session('success')); ?>
+
+        </div>
+    <?php endif; ?>
 
     <div class="customer-card">
 
@@ -116,55 +123,24 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th>Address</th>
                 </tr>
             </thead>
 
             <tbody>
-
-                <tr>
-                    <td>C001</td>
-                    <td>John Doe</td>
-                    <td>john@example.com</td>
-                    <td>09123456789</td>
-                    <td>
-                        <span class="status active">
-                            Active
-                        </span>
-                    </td>
-                    <td>
-                        <button class="action-btn edit-btn">
-                            Edit
-                        </button>
-
-                        <button class="action-btn delete-btn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>C002</td>
-                    <td>Smith</td>
-                    <td>smith@example.com</td>
-                    <td>09987654321</td>
-                    <td>
-                        <span class="status inactive">
-                            Inactive
-                        </span>
-                    </td>
-                    <td>
-                        <button class="action-btn edit-btn">
-                            Edit
-                        </button>
-
-                        <button class="action-btn delete-btn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-
+                <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <tr>
+                        <td><?php echo e(sprintf('C%03d', $customer->id)); ?></td>
+                        <td><?php echo e($customer->name ?? '-'); ?></td>
+                        <td><?php echo e($customer->email ?? '-'); ?></td>
+                        <td><?php echo e($customer->phone ?? '-'); ?></td>
+                        <td><?php echo e($customer->address ? \Illuminate\Support\Str::limit($customer->address, 40) : '-'); ?></td>
+                    </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <tr>
+                        <td colspan="5" class="text-center py-8">No customers found. Use the button above to add one.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
 

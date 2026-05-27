@@ -3,10 +3,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SalesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomerController;
 
 // login routes
 Route::get('/', function () {
@@ -43,26 +47,29 @@ Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('pr
 // sales routes
 Route::get(
     '/sales',
-    [AuthController::class, 'sales']
+    [SalesController::class, 'index']
 )->middleware('auth');
+
+Route::post(
+    '/sales/complete',
+    [SalesController::class, 'store']
+)->middleware('auth')->name('sales.complete');
 
 // inventory routes
-Route::get(
-    '/inventory',
-    [AuthController::class, 'inventory']
-)->middleware('auth');
+Route::get('/inventory', [InventoryController::class, 'index'])->middleware('auth');
 
 // customers routes
-Route::get(
-    '/customers',
-    [AuthController::class, 'customers']
-)->middleware('auth');
+Route::get('/customers', [CustomerController::class, 'index'])->middleware('auth');
+Route::get('/customers/create', [CustomerController::class, 'create'])->middleware('auth')->name('customers.create');
+Route::post('/customers', [CustomerController::class, 'store'])->middleware('auth')->name('customers.store');
 
 // reports routes
-Route::get(
-    '/reports',
-    [AuthController::class, 'report']
-)->middleware('auth');
+Route::get('/reports', [ReportController::class, 'index'])->middleware('auth');
+Route::get('/reports/create', [ReportController::class, 'create'])->middleware('auth')->name('reports.create');
+Route::post('/reports', [ReportController::class, 'store'])->middleware('auth')->name('reports.store');
+Route::get('/reports/{id}/edit', [ReportController::class, 'edit'])->middleware('auth');
+Route::put('/reports/{id}', [ReportController::class, 'update'])->middleware('auth')->name('reports.update');
+Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->middleware('auth')->name('reports.destroy');
 
 // settings routes
 Route::get(

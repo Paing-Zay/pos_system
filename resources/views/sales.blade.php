@@ -77,6 +77,11 @@
         color: #856404;
     }
 
+    .unpaid{
+        background: #f8d7da;
+        color: #721c24;
+    }
+
     .action-btn{
         border: none;
         padding: 6px 10px;
@@ -115,53 +120,77 @@
                     <th>Customer</th>
                     <th>Date</th>
                     <th>Total</th>
+                    <th>Paid</th>
+                    <th>Due</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>#INV001</td>
-                    <td>John Doe</td>
-                    <td>12 May 2026</td>
-                    <td>$120</td>
-                    <td>
-                        <span class="status paid">Paid</span>
-                    </td>
-                    <td>
-                        <button class="action-btn edit-btn">
-                            Edit
-                        </button>
-
-                        <button class="action-btn delete-btn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>#INV002</td>
-                    <td>Smith</td>
-                    <td>12 May 2026</td>
-                    <td>$80</td>
-                    <td>
-                        <span class="status pending">Pending</span>
-                    </td>
-                    <td>
-                        <button class="action-btn edit-btn">
-                            Edit
-                        </button>
-
-                        <button class="action-btn delete-btn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-
+                @forelse($sales as $sale)
+                    <tr>
+                        <td>#INV{{ str_pad($sale->id, 3, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ $sale->customer_name ?: 'Guest' }}</td>
+                        <td>{{ $sale->created_at->format('d M Y') }}</td>
+                        <td>${{ number_format($sale->total_amount, 2) }}</td>
+                        <td>${{ number_format($sale->pay_amount ?? 0, 2) }}</td>
+                        <td>${{ number_format($sale->due_amount ?? 0, 2) }}</td>
+                        <td>
+                            <span class="status {{ $sale->status == 1 ? 'paid' : ($sale->status == 2 ? 'pending' : 'unpaid') }}">{{ $sale->status == 1 ? 'Paid' : ($sale->status == 2 ? 'Partial' : 'Unpaid') }}</span>
+                        </td>
+                        <td>
+                            <button class="action-btn edit-btn">View</button>
+                            <button class="action-btn delete-btn">Delete</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="8" style="text-align: center;">No sales found.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
 
+    </div>
+
+    <div class="sales-card" style="margin-top: 30px;">
+        <h3>Sale Items</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $groupedSaleItems = collect($saleItems)->groupBy('product_id');
+                @endphp
+
+                @forelse($groupedSaleItems as $group)
+                    @php
+                        $item = $group->first();
+                        $quantity = $group->sum('quantity');
+                        $lineTotal = $group->sum(function ($item) {
+                            return $item->quantity * $item->price;
+                        });
+                    @endphp
+                    <tr>
+                        <td>{{ optional($item->product)->name ?? 'Product #' . $item->product_id }}</td>
+                        <td>{{ $quantity }}</td>
+                        <td>${{ number_format($item->price, 2) }}</td>
+                        <td>${{ number_format($lineTotal, 2) }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" style="text-align: center;">No sale items found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 
 </div>
