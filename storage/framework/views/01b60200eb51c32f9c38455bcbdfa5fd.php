@@ -185,7 +185,7 @@
                         <td><?php echo e($product->product_code); ?></td>
                         <td><?php echo e($product->name); ?></td>
                         <td><?php echo e($product->category ?? '-'); ?></td>
-                        <td>Ks<?php echo e($product->price); ?></td>
+                        <td><?php echo e($product->price); ?> Ks</td>
                         <td><?php echo e($product->stock); ?></td>
                         <td>
                             <span class="stock <?php echo e($product->status === 'in_stock' ? 'in-stock' : ($product->status === 'low_stock' ? 'low-stock' : 'out-stock')); ?>">

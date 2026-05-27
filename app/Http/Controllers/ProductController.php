@@ -41,13 +41,13 @@ class ProductController extends Controller
 
         $product->update([
             'product_code' => $request->product_code,
-            'name' => $request->name,
-            'category' => $request->category,
-            'price' => $request->price,
-            'cost_price' => $request->cost_price,
-            'stock' => $request->stock,
-            'status' => $request->status,
-            'updated_at' => now(),
+            'name'         => $request->name,
+            'category'     => $request->category,
+            'price'        => $request->price,
+            'cost_price'   => $request->cost_price,
+            'stock'        => $request->stock,
+            'status'       => $request->status,
+            'updated_at'   => now(),
         ]);
 
         return redirect('/products')->with('success', 'Product updated successfully!');

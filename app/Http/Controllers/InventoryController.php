@@ -9,10 +9,9 @@ class InventoryController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query();
-
+        $query    = Product::query();
         $category = $request->query('category');
-        $status = $request->query('status');
+        $status   = $request->query('status');
 
         if ($category) {
             $query->where('category', $category);
@@ -22,11 +21,11 @@ class InventoryController extends Controller
             $query->where('status', $status);
         }
 
-        $products = $query->get();
+        $products   = $query->get();
         $categories = Product::whereNotNull('category')->distinct()->orderBy('category')->pluck('category');
-        $statuses = [
-            'in_stock' => 'In Stock',
-            'low_stock' => 'Low Stock',
+        $statuses   = [
+            'in_stock'     => 'In Stock',
+            'low_stock'    => 'Low Stock',
             'out_of_stock' => 'Out of Stock',
         ];
 

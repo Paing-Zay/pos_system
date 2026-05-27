@@ -133,9 +133,9 @@
                         <td>#INV{{ str_pad($sale->id, 3, '0', STR_PAD_LEFT) }}</td>
                         <td>{{ $sale->customer_name ?: 'Guest' }}</td>
                         <td>{{ $sale->created_at->format('d M Y') }}</td>
-                        <td>${{ number_format($sale->total_amount, 2) }}</td>
-                        <td>${{ number_format($sale->pay_amount ?? 0, 2) }}</td>
-                        <td>${{ number_format($sale->due_amount ?? 0, 2) }}</td>
+                        <td>{{ number_format($sale->total_amount, 2) }} Ks</td>
+                        <td>{{ number_format($sale->pay_amount ?? 0, 2) }} Ks</td>
+                        <td>{{ number_format($sale->due_amount ?? 0, 2) }} Ks</td>
                         <td>
                             <span class="status {{ $sale->status == 1 ? 'paid' : ($sale->status == 2 ? 'pending' : 'unpaid') }}">{{ $sale->status == 1 ? 'Paid' : ($sale->status == 2 ? 'Partial' : 'Unpaid') }}</span>
                         </td>
@@ -172,8 +172,8 @@
 
                 @forelse($groupedSaleItems as $group)
                     @php
-                        $item = $group->first();
-                        $quantity = $group->sum('quantity');
+                        $item      = $group->first();
+                        $quantity  = $group->sum('quantity');
                         $lineTotal = $group->sum(function ($item) {
                             return $item->quantity * $item->price;
                         });
@@ -181,8 +181,8 @@
                     <tr>
                         <td>{{ optional($item->product)->name ?? 'Product #' . $item->product_id }}</td>
                         <td>{{ $quantity }}</td>
-                        <td>${{ number_format($item->price, 2) }}</td>
-                        <td>${{ number_format($lineTotal, 2) }}</td>
+                        <td>{{ number_format($item->price, 2) }} Ks</td>
+                        <td>{{ number_format($lineTotal, 2) }} Ks</td>
                     </tr>
                 @empty
                     <tr>

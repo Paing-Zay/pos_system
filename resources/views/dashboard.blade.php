@@ -47,7 +47,7 @@
 
                             <div class="price-row">
                                 <div class="price">
-                                    Ks{{ $product->price }}
+                                    {{ $product->price }} Ks
                                 </div>
 
                                 <button class="add-btn"
@@ -88,7 +88,7 @@
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks0</td>
+                    <td style="width: 100px; text-align: right;border:none;padding: 14px;">0 Ks</td>
             </tr>
                 </tbody>
             </table>
@@ -130,7 +130,7 @@
                         <label><strong>Date</strong></label>
                         <input type="date"
                             id="order-date"
-                            value="{{ date('Y-m-d') }}" style="width:100px;">
+                            value="{{ date('Y-m-d') }}" style="width:200px;">
                     </div>
 
                     <!-- Payment Status -->
@@ -146,7 +146,7 @@
                     <!-- Auto Payment Summary -->
                     <div class="input-group">
                         <label><strong>Paid Amount</strong></label>
-                        <input type="number" id="paid-amount" min="0" step="0.01" style="width:200px; background:#f4f4f4;">
+                        <input type="text" id="paid-amount" min="0" step="0.01" style="width:200px; background:#f4f4f4;">
                     </div>
 
                     <div class="input-group">
@@ -189,7 +189,7 @@
 @endsection
 
 <script>
-    const csrfToken = '{{ csrf_token() }}';
+    const csrfToken        = '{{ csrf_token() }}';
     const salesCompleteUrl = '{{ url('/sales/complete') }}';
     let cart = {};
 
@@ -255,7 +255,7 @@
                         <button style="width: 20px" onclick="increaseQty(${item.product_id})">+</button>
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks${amount}</td>
+                    <td style="width: 100px; text-align: right;border:none;padding: 14px;">${amount} Ks</td>
                 </tr>
             `;
         });
@@ -268,7 +268,7 @@
                     <td style="width: 100px; text-align: left;border:none;padding: 14px;">Total:
                     </td>
 
-                    <td style="width: 100px; text-align: left;border:none;padding: 14px;">Ks${total}</td>
+                    <td style="width: 100px; text-align: right;border:none;padding: 14px;">${total} Ks</td>
             </tr>`;
     }
 
@@ -291,21 +291,21 @@
 
     function updatePaymentSummary()
     {
-        const status = document.getElementById('payment-status').value;
+        const status    = document.getElementById('payment-status').value;
         const paidInput = document.getElementById('paid-amount');
-        const total = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
+        const total     = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
 
         let paidAmount = 0;
-        let dueAmount = total;
+        let dueAmount  = total;
 
         if (status === 'paid') {
             paidInput.disabled = true;
-            paidAmount = total;
-            dueAmount = 0;
+            paidAmount         = total;
+            dueAmount          = 0;
         } else if (status === 'unpaid') {
             paidInput.disabled = true;
-            paidAmount = 0;
-            dueAmount = total;
+            paidAmount         = 0;
+            dueAmount          = total;
         } else {
             paidInput.disabled = false;
             let rawValue = parseFloat(paidInput.value);
@@ -316,19 +316,18 @@
                 rawValue = total;
             }
             paidInput.value = rawValue.toFixed(1);
-            paidAmount = rawValue;
-            dueAmount = total - paidAmount;
+            paidAmount      = rawValue;
+            dueAmount       = total - paidAmount;
         }
 
-        paidInput.value = paidAmount.toFixed(2);
-        document.getElementById('due-amount').value = `Ks${dueAmount.toFixed(2)}`;
+        paidInput.value = `${paidAmount} Ks`;
+        document.getElementById('due-amount').value = `${dueAmount} Ks`;
     }
 
     function renderModalCard()
     {
         let tbody = document.getElementById('modal-card-body');
         tbody.innerHTML = '';
-
         let total = 0;
 
         Object.values(cart).forEach(item => {
@@ -339,7 +338,7 @@
                 <tr>
                     <td style="padding:14px;">${item.name}</td>
                     <td style="padding:14px;">${item.qty}</td>
-                    <td style="padding:14px;">Ks${amount}</td>
+                    <td style="padding:14px; text-align: right;">${amount} Ks</td>
                 </tr>
             `;
         });
@@ -348,7 +347,7 @@
             <tr>
                 <td></td>
                 <td style="padding:14px;"><strong>Total:</strong></td>
-                <td style="padding:14px;"><strong>Ks${total}</strong></td>
+                <td style="padding:14px; text-align: right;"><strong>${total} Ks</strong></td>
             </tr>
         `;
 
@@ -364,11 +363,11 @@
         }
 
         const customerName = document.getElementById('customer-name').value;
-        const orderDate = document.getElementById('order-date').value;
-        const status = document.getElementById('payment-status').value;
-        const total = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
-        const paidAmount = parseFloat(document.getElementById('paid-amount').value) || 0;
-        const items = Object.values(cart).map(item => ({
+        const orderDate    = document.getElementById('order-date').value;
+        const status       = document.getElementById('payment-status').value;
+        const total        = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
+        const paidAmount   = parseFloat(document.getElementById('paid-amount').value) || 0;
+        const items        = Object.values(cart).map(item => ({
             product_id: item.product_id,
             name: item.name,
             price: item.price,
@@ -413,29 +412,27 @@
     {
         document.getElementById('payment-status').addEventListener('change', updatePaymentSummary);
 
-        const paymentStatus = document.getElementById('payment-status');
+        const paymentStatus   = document.getElementById('payment-status');
         const paidAmountInput = document.getElementById('paid-amount');
 
         paymentStatus.addEventListener('change', updatePaymentSummary);
         paidAmountInput.addEventListener('input', updatePaymentSummary);
 
         const searchBox = document.getElementById('search-box');
-        const notFound = document.getElementById('not-found');
+        const notFound  = document.getElementById('not-found');
 
         searchBox.addEventListener('keyup', function()
         {
             const value = this.value.toLowerCase();
-
-            let found = false;
+            let found   = false;
 
             document.querySelectorAll('.product-card').forEach(function(card)
             {
                 const name = card.dataset.name;
-
                 if (name.includes(value))
                 {
                     card.style.display = 'block';
-                    found = true;
+                    found              = true;
                 }
                 else
                 {

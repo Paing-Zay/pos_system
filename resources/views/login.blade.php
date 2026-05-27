@@ -237,15 +237,13 @@
         <div class="logo">
             POS System
         </div>
-
         <h1 class="title">
             Welcome Back
         </h1>
-
         <p class="subtitle">
             Enter your email and password to access your account
         </p>
-
+        
         @if ($errors->any())
             <div style="color:red; margin-bottom:15px;">
                 {{ $errors->first() }}
@@ -253,42 +251,28 @@
         @endif
 
         <form method="POST" action="/login">
-
             @csrf
-
             <div class="form-group">
                 <label>Email</label>
-
-                <input type="email"
-                       name="email"
-                       placeholder="admin@gmail.com">
+                <input type="email" name="email" placeholder="admin@gmail.com">
             </div>
-
             <div class="form-group">
                 <label>Password</label>
-
-                <input type="password"
-                       name="password"
-                       placeholder="••••••••">
+                <input type="password" name="password" placeholder="••••••••">
             </div>
 
             <div class="options">
-
                 <label>
                     <input type="checkbox" style="width:auto;">
                     Remember Me
                 </label>
-
                 <a href="#">
                     Forgot Password?
                 </a>
-
             </div>
-
             <button type="submit" class="login-btn">
                 Login
             </button>
-
         </form>
 
         <div class="divider">
@@ -296,15 +280,12 @@
         </div>
 
         <div class="social-login">
-
             <button class="social-btn">
                 Google
             </button>
-
             <button class="social-btn">
                 Apple
             </button>
-
         </div>
 
         <div class="signup">
@@ -315,11 +296,9 @@
     </div>
 
     <div class="right-panel">
-
         <h2>
             Effortlessly manage your sales and inventory.
         </h2>
-
         <p>
             Log in to access your POS dashboard and manage products,
             barcode scanning, reports and customer sales.
@@ -328,37 +307,27 @@
         <div class="dashboard-preview">
 
             <div class="cards">
-
                 <div class="card">
                     <small>Total Sales</small>
                     <h3>$23,200</h3>
                 </div>
-
                 <div class="card">
                     <small>Orders</small>
                     <h3>320</h3>
                 </div>
-
                 <div class="card">
                     <small>Customers</small>
                     <h3>120</h3>
                 </div>
-
             </div>
-
             <div class="chart">
                 POS Dashboard Preview
             </div>
-
         </div>
-
         <div class="footer">
             Copyright © 2026 POS System
         </div>
-
     </div>
-
 </div>
-
 </body>
 </html>
